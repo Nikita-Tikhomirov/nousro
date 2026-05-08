@@ -1,0 +1,102 @@
+/*
+Theme Name: Nousro - Theme
+Description: This is outstanding WP theme developed on Material Design
+Version: 1.0.0
+Author: Zozulya Evgeny
+Author URI: https://github.com/InfernaLEVP
+*/
+body{
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+img{
+    max-width: 100%;
+}
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.drop-nav li {
+	position: relative;
+	float: left;
+}
+.drop-nav li > ul {
+	position: absolute;
+	left:-999em;
+	width:100%;
+	top:0;
+	transition:top .5s ease;
+}
+.drop-nav ul ul {
+	transition:transform .5s ease, opacity .3s ease;
+	transform:translateX(0);
+	opacity:0;
+}
+.drop-nav a {
+	display: block;
+	background: #f3f3f3;
+	padding: 5px 10px 5px 10px;
+	text-decoration: none;
+	white-space: nowrap;
+	color: #666666;
+	border: 1px solid #fff;
+	line-height:1.2em;
+}
+.drop-nav a:hover {
+	background: #ccc;
+}
+.drop-nav li:hover > ul {
+	left:0;
+	top:100%;
+}
+.drop-nav li li:hover > ul {
+	left:0;
+	transform:translateX(100%);
+	top:0;
+	opacity:1;
+}
+.drop-nav ul li {
+	float: none;
+}
+.drop-nav li:hover > a {
+	background: #ccc;
+}
+#drop-nav ul li {
+	border-top: none;
+}
+.middle-indicator{
+	position:absolute;
+	top:50%;
+}
+.middle-indicator-text{
+	font-size: 4.2rem;
+}
+a.middle-indicator-text{
+	color:white !important;
+}
+.content-indicator{
+	width: 64px;
+	height: 64px;
+	background: none;
+	-moz-border-radius: 50px;
+	-webkit-border-radius: 50px;
+	border-radius: 50px; 
+}
+.indicators{
+	visibility: hidden;
+}
+.carousel.carousel-slider .carousel-fixed-item {
+    bottom: calc(50% - 25px)!important;
+}
+.category-page .carousel .material-icons{
+	font-size: 36px!important;
+}
+nav.navigation.nav-wrapper {
+    background: red !important;
+}
+.category-page article.page{
+	margin-top:30px
+}
+
+

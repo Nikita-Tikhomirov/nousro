@@ -1,0 +1,34 @@
+@import 'mixins.scss';
+.banner{
+    max-height: 400px;
+    overflow: hidden;
+    position: relative;
+    height: 400px;
+    margin-top: -35px;
+    margin-bottom: 35px;
+    @media #{$medium-and-down} {
+        display: none !important;
+    }
+    &__img{
+        position: absolute;
+        width: 100%;
+        height: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+}
+.category-page{
+    .carousel{
+        .carousel-item{
+            align-items: flex-start;
+        }
+    }
+    .content-screen__wrapper{
+        @include centered-container;
+    }
+    .content__screen{
+        margin-top: 25px;
+    }
+}
+

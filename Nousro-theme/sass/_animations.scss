@@ -1,0 +1,40 @@
+@keyframes slidein-left {
+    from {
+      transform: translateX(-100%);
+      opacity: 0.1; 
+    }
+  
+    to {
+        transform: translateX(0%);
+        opacity: 1; 
+    }
+}
+@keyframes slidein-right {
+    from {
+      transform: translateX(100%);
+      opacity: 0.1; 
+    }
+  
+    to {
+        transform: translateX(0%);
+        opacity: 1; 
+    }
+}
+.collapsible{
+    .active{
+        .collapsible-header{
+            color: crimson;
+        }
+        .collapsible-body{
+            .collection{
+                .collection-item{
+                    color: #5f6368;
+                }
+                .active{
+                    background-color: crimson;
+                    color: white;
+                }
+            }
+        }
+    }
+}

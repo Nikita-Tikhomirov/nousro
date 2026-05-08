@@ -1,0 +1,51 @@
+.first-screen{
+    overflow: hidden;
+    background: transparent!important;
+    .card{
+        .card-image{
+            .card-title{
+                // color: #222;
+                color: white;
+                background: rgba(0,0,0,.5);
+                text-align: left;
+            }
+        }
+    }
+    .course-license{
+        .card{
+            .card-image{
+                display: flex;
+                img{
+                    width: 50%;
+                }
+            }
+        }
+    }
+    .card-slidein-left{
+        animation-duration: 1s;
+        animation-name: slidein-left;
+    }
+    .card-slidein-right{
+        animation-duration: 1s;
+        animation-name: slidein-right;
+    }
+}
+.stacked__form-progress{
+    display: flex;
+    justify-content: space-between;
+    .col{
+        width: 33.33%;
+        line-height: 55px;
+        transition: color .5s;
+    }
+}
+.staked__form-questions{
+    text-align: left;
+    margin-bottom: 25px;
+    p{
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 25px!important;
+    }
+    
+}

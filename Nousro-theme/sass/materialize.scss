@@ -1,0 +1,105 @@
+@charset "UTF-8";
+
+@import "../materialize/sass/components/color-variables";
+@import "../materialize/sass/components/color-classes";
+
+@import "../materialize/sass/components/variables";
+@import "../materialize/sass/components/normalize";
+@import "../materialize/sass/components/global";
+@import "../materialize/sass/components/badges";
+@import "../materialize/sass/components/icons-material-design";
+@import "../materialize/sass/components/grid";
+@import "../materialize/sass/components/typography";
+@import "../materialize/sass/components/cards";
+@import "../materialize/sass/components/buttons";
+@import "../materialize/sass/components/waves";
+@import "../materialize/sass/components/navbar";
+@import "../materialize/sass/components/transitions";
+@import "../materialize/sass/components/collapsible";
+@import "../materialize/sass/components/modal";
+@import "../materialize/sass/components/materialbox";
+@import "../materialize/sass/components/sidenav";
+@import "../materialize/sass/components/forms/forms";
+@import "../materialize/sass/components/forms/input-fields";
+@import "../materialize/sass/components/forms/checkboxes";
+@import "../materialize/sass/components/pulse";
+@import "../materialize/sass/components/dropdown";
+@import "../materialize/sass/components/carousel";
+@import "../materialize//sass/components/tabs";
+
+@import '_mixins.scss';
+@import '_layout.scss';
+@import '_header.scss';
+@import 'cp_first-screen';
+@import 'cat_layout';
+@import 'animations';
+
+@import 'front/layout';
+
+
+.category-card{
+    .scheme__item {
+        display: flex;
+        border-bottom: 1px solid;
+        justify-content: space-between;
+    }
+    .card-content{
+        padding: 14px;
+    }
+    span.badge.new:after{
+        content: '';
+    }
+    span.badge{
+        height: auto;
+        margin-bottom: 4px;
+        margin-top: 4px;
+    }
+    .card-image img{
+        max-width: 100%;
+        height: auto;
+    }
+    .card-image .card-title{
+        font-size: 22px;
+        padding: 14px;
+        text-shadow: -1px 1px 0 #000,
+				  1px 1px 0 #000,
+				 1px -1px 0 #000,
+				-1px -1px 0 #000;
+    }
+    .tabs{
+        overflow: hidden;
+    }
+}
+img{
+    height: auto;
+}
+.breadcrumb{
+    font-size: 14px;
+}
+@media(max-width:992px){
+    h1{
+        font-size: 2rem;
+        overflow: hidden;
+        margin-top: 25px;
+    }
+    h2{
+        font-size: 24px;
+        overflow: hidden;
+    }
+}
+@media(max-width:360px){
+    h1{
+        font-size: 2.5rem;
+        overflow: hidden;
+    }
+}
+.sidebar__wrapper .collection a:first-letter {
+    text-transform: uppercase;
+}
+#slide-out .collection a:first-letter {
+    text-transform: uppercase;
+}
+nav ul a{
+    font-family: Roboto, sans-serif;
+    font-size: 18px;
+}
