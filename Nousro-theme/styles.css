@@ -747,12 +747,12 @@ ul {
     color: #1c2b39;
 }
 .reviewsSwiper-prev {
-    left: -20px;
-    color: #087ccf;
+    left: -20px !important;
+    color: #087ccf !important;
 }
 .reviewsSwiper-next {
-    right: -20px;
-    color: #087ccf;
+    right: -20px !important;
+    color: #087ccf !important;
 }
 .reviewsSwiper-pagination {
     bottom: 10px !important;
@@ -1265,14 +1265,14 @@ ul {
 
 .popularSwiper-prev,
 .popularSwiper-next {
-    color: #087ccf;
-    top: 45%;
+    color: #087ccf !important;
+    top: 45% !important;
 }
 .popularSwiper-prev {
-    left: -20px;
+    left: -20px !important;
 }
 .popularSwiper-next {
-    right: -20px;
+    right: -20px !important;
 }
 
 @media (max-width: 768px) {
@@ -1289,9 +1289,9 @@ ul {
         padding: 8px 0 24px;
     }
     .popularSwiper-prev {
-        left: -8px;
+        left: -8px !important;
     }
     .popularSwiper-next {
-        right: -8px;
+        right: -8px !important;
     }
 }
