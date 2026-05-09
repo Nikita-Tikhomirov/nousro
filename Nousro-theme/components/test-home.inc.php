@@ -137,9 +137,9 @@ foreach ($popular_cats as $cat):
                                     </div>
                                 <?php endif; ?>
                                 <div class="popular-card__body">
-                                    <h3 class="popular-card__title">
+                                    <h5 class="popular-card__title">
                                         <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                    </h3>
+                                    </h5>
                                     <?php
                                     $hours = get_field('course_hours') ?: get_field('chasy');
                                     if ($hours): ?>
