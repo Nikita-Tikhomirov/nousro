@@ -747,11 +747,11 @@ ul {
     color: #1c2b39;
 }
 .reviewsSwiper-prev {
-    left: 0;
+    left: -20px;
     color: #087ccf;
 }
 .reviewsSwiper-next {
-    right: 0;
+    right: -20px;
     color: #087ccf;
 }
 .reviewsSwiper-pagination {
@@ -771,6 +771,9 @@ ul {
 /* ============================================ */
 .faq-section {
     padding: 50px 0;
+}
+.faq-section .section__title {
+    font-size: 24px;
 }
 .faq-accordion {
     margin: 0 auto;
@@ -1266,10 +1269,10 @@ ul {
     top: 45%;
 }
 .popularSwiper-prev {
-    left: 0;
+    left: -20px;
 }
 .popularSwiper-next {
-    right: 0;
+    right: -20px;
 }
 
 @media (max-width: 768px) {
@@ -1284,5 +1287,11 @@ ul {
     }
     .popularSwiper {
         padding: 8px 0 24px;
+    }
+    .popularSwiper-prev {
+        left: -8px;
+    }
+    .popularSwiper-next {
+        right: -8px;
     }
 }
