@@ -8,7 +8,6 @@ $hero_desc  = get_field('hero_desc');
 $hero_btns  = get_field('hero_buttons');
 $services   = get_field('services_cards');
 $cat_items  = get_field('cat_items');
-$popular_tabs = get_field('popular_tabs');
 ?>
 
 <section class="hero-section"<?php if ($hero_bg): ?> style="background-image: url('<?php echo esc_url($hero_bg['url']); ?>');"<?php endif; ?>>
@@ -96,54 +95,80 @@ $popular_tabs = get_field('popular_tabs');
 <?php endif; ?>
 
 <!-- ============================================ -->
-<!-- ПОПУЛЯРНЫЕ НАПРАВЛЕНИЯ (табы + слайдеры) -->
+<!-- ПОПУЛЯРНЫЕ НАПРАВЛЕНИЯ (табы + слайдеры из рубрик) -->
 <!-- ============================================ -->
-<?php if ($popular_tabs): ?>
+<?php
+$popular_cats = array(
+    array('id' => 8,  'title' => 'Повышение квалификации'),
+    array('id' => 9,  'title' => 'Профпереподготовка'),
+    array('id' => 11, 'title' => 'Рабочие специальности'),
+);
+?>
 <section class="section popular-section" style="background: #f6f7f9;">
     <div class="content">
         <h2 class="section__title" data-aos="fade-up">Популярные направления</h2>
 
         <div class="popular-tabs">
             <div class="popular-tabs__nav">
-                <?php $tab_index = 0; foreach ($popular_tabs as $tab): ?>
+                <?php $tab_index = 0; foreach ($popular_cats as $cat): ?>
                     <button class="popular-tabs__btn <?php echo $tab_index === 0 ? 'active' : ''; ?>" data-tab="<?php echo $tab_index; ?>">
-                        <?php echo esc_html($tab['tab_title']); ?>
+                        <?php echo esc_html($cat['title']); ?>
                     </button>
                 <?php $tab_index++; endforeach; ?>
             </div>
 
             <div class="popular-tabs__panels">
-                <?php $tab_index = 0; foreach ($popular_tabs as $tab): ?>
+                <?php $tab_index = 0; foreach ($popular_cats as $cat):
+                    $query = new WP_Query(array(
+                        'cat'            => $cat['id'],
+                        'posts_per_page' => 10,
+                        'post_type'      => 'page',
+                        'post_status'    => 'publish',
+                        'orderby'        => 'date',
+                        'order'          => 'DESC',
+                        'tax_query'      => array(
+                            array(
+                                'taxonomy' => 'category',
+                                'field'    => 'term_id',
+                                'terms'    => $cat['id'],
+                            ),
+                        ),
+                    ));
+                ?>
                     <div class="popular-tabs__panel <?php echo $tab_index === 0 ? 'active' : ''; ?>" data-tab="<?php echo $tab_index; ?>">
-                        <?php if (!empty($tab['tab_courses'])): ?>
+                        <?php if ($query->have_posts()): ?>
                             <div class="swiper popularSwiper popularSwiper-<?php echo $tab_index; ?>">
                                 <div class="swiper-wrapper">
-                                    <?php foreach ($tab['tab_courses'] as $course): ?>
+                                    <?php while ($query->have_posts()): $query->the_post(); ?>
                                         <div class="swiper-slide">
                                             <div class="popular-card">
-                                                <?php if (!empty($course['course_img'])): ?>
+                                                <?php if (has_post_thumbnail()): ?>
                                                     <div class="popular-card__image">
-                                                        <img src="<?php echo esc_url($course['course_img']['url']); ?>" alt="<?php echo esc_attr($course['course_title']); ?>" loading="lazy">
+                                                        <a href="<?php the_permalink(); ?>">
+                                                            <?php the_post_thumbnail('medium', array('loading' => 'lazy')); ?>
+                                                        </a>
                                                     </div>
                                                 <?php endif; ?>
                                                 <div class="popular-card__body">
-                                                    <?php if (!empty($course['course_title'])): ?>
-                                                        <h3 class="popular-card__title"><?php echo esc_html($course['course_title']); ?></h3>
+                                                    <h3 class="popular-card__title">
+                                                        <a href="<?php the_permalink(); ?>" style="color: inherit; text-decoration: none;"><?php the_title(); ?></a>
+                                                    </h3>
+                                                    <?php
+                                                    $hours = get_field('course_hours') ?: get_field('chasy');
+                                                    if ($hours): ?>
+                                                        <span class="popular-card__hours"><?php echo esc_html($hours); ?> ч.</span>
                                                     <?php endif; ?>
-                                                    <?php if (!empty($course['course_hours'])): ?>
-                                                        <span class="popular-card__hours"><?php echo esc_html($course['course_hours']); ?> ч.</span>
-                                                    <?php endif; ?>
-                                                    <?php if (!empty($course['course_link'])): ?>
-                                                        <a href="<?php echo esc_url($course['course_link']); ?>" class="popular-card__btn">Подробнее</a>
-                                                    <?php endif; ?>
+                                                    <a href="<?php the_permalink(); ?>" class="popular-card__btn">Подробнее</a>
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php endforeach; ?>
+                                    <?php endwhile; wp_reset_postdata(); ?>
                                 </div>
                                 <div class="swiper-button-prev"></div>
                                 <div class="swiper-button-next"></div>
                             </div>
+                        <?php else: ?>
+                            <p style="text-align:center; color:#888;">Нет курсов в этой рубрике</p>
                         <?php endif; ?>
                     </div>
                 <?php $tab_index++; endforeach; ?>
@@ -151,7 +176,6 @@ $popular_tabs = get_field('popular_tabs');
         </div>
     </div>
 </section>
-<?php endif; ?>
 
 <!-- ============================================ -->
 <!-- ОСТАЛЬНЫЕ СЕКЦИИ (из оригинальной главной) -->
@@ -581,62 +605,42 @@ $popular_tabs = get_field('popular_tabs');
 </section>
 
 <!-- ============================================ -->
-<!-- ОТЗЫВЫ -->
+<!-- ОТЗЫВЫ (Swiper-слайдер) -->
 <!-- ============================================ -->
+<?php
+$reviews = array(
+    array('text' => 'Нужно было срочно обучить сотрудников по охране труда перед проверкой. Сделали всё за 2 дня, документы получили без проблем. Проверку прошли. Спасибо за оперативность.', 'author' => 'Алексей', 'company' => 'ООО «СтройГарант»'),
+    array('text' => 'Работаю с разными учебными центрами, но здесь понравилось, что всё четко и без лишней бюрократии. Быстро отвечают, помогают подобрать программу. Уже не первый раз обращаемся.', 'author' => 'Ирина', 'company' => 'специалист по кадрам'),
+    array('text' => 'Проходил повышение квалификации дистанционно. Удобно, что можно учиться в своем темпе. Материалы нормальные, без воды. Документы пришли вовремя.', 'author' => 'Дмитрий', 'company' => ''),
+    array('text' => 'Нужно было обучить сразу 12 человек по пожарной безопасности. Все оформили дистанционно, сделали скидку за объем. Очень удобно, будем сотрудничать дальше.', 'author' => 'Ольга', 'company' => 'HR'),
+    array('text' => 'Искал, где быстро пройти обучение по ГО и ЧС. Здесь объяснили, что нужно именно под мою должность, оформили за короткий срок. Всё официально, без проблем.', 'author' => 'Сергей', 'company' => 'инженер'),
+    array('text' => 'Честно, сначала сомневалась из-за дистанционного формата, но в итоге всё прошло нормально. Документы настоящие, приняли без вопросов. Спасибо менеджеру за консультацию.', 'author' => 'Марина', 'company' => ''),
+    array('text' => 'Заказывал обучение для себя и сотрудника. Всё сделали быстро, без лишних звонков и навязывания. Удобный формат, рекомендую.', 'author' => 'ИП Кузнецов', 'company' => ''),
+    array('text' => 'Помогли разобраться, какое обучение нужно для нашей компании. До этого вообще не понимали, что требуется по закону. Сейчас всё закрыли и спокойно работаем.', 'author' => 'Екатерина', 'company' => 'бухгалтер'),
+    array('text' => 'Нормальный учебный центр. Без лишнего пафоса, просто делают свою работу. Сроки соблюдают, документы выдают.', 'author' => 'Андрей', 'company' => ''),
+    array('text' => 'Работаем уже второй год. Закрываем через них все вопросы по обучению сотрудников. Удобно, что есть разные направления и не нужно искать нескольких подрядчиков.', 'author' => 'Виктор', 'company' => 'руководитель отдела'),
+);
+?>
 <section class="section reviews-section" style="background: #fff;">
     <div class="content">
         <h2 class="section__title" data-aos="fade-up">Отзывы о Межрегиональном Учебном Центре</h2>
-        <div class="reviews-grid">
-            <div class="review-card" data-aos="fade-up" data-aos-delay="0">
-                <div class="review-card__stars">★★★★★</div>
-                <p class="review-card__text">Нужно было срочно обучить сотрудников по охране труда перед проверкой. Сделали всё за 2 дня, документы получили без проблем. Проверку прошли. Спасибо за оперативность.</p>
-                <p class="review-card__author"><strong>Алексей</strong>, ООО «СтройГарант»</p>
+        <div class="swiper reviewsSwiper">
+            <div class="swiper-wrapper">
+                <?php foreach ($reviews as $review): ?>
+                    <div class="swiper-slide">
+                        <div class="review-card">
+                            <div class="review-card__stars">★★★★★</div>
+                            <p class="review-card__text"><?php echo esc_html($review['text']); ?></p>
+                            <p class="review-card__author">
+                                <strong><?php echo esc_html($review['author']); ?></strong><?php echo $review['company'] ? ', ' . esc_html($review['company']) : ''; ?>
+                            </p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
-            <div class="review-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="review-card__stars">★★★★★</div>
-                <p class="review-card__text">Работаю с разными учебными центрами, но здесь понравилось, что всё четко и без лишней бюрократии. Быстро отвечают, помогают подобрать программу. Уже не первый раз обращаемся.</p>
-                <p class="review-card__author"><strong>Ирина</strong>, специалист по кадрам</p>
-            </div>
-            <div class="review-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="review-card__stars">★★★★★</div>
-                <p class="review-card__text">Проходил повышение квалификации дистанционно. Удобно, что можно учиться в своем темпе. Материалы нормальные, без воды. Документы пришли вовремя.</p>
-                <p class="review-card__author"><strong>Дмитрий</strong></p>
-            </div>
-            <div class="review-card" data-aos="fade-up" data-aos-delay="0">
-                <div class="review-card__stars">★★★★★</div>
-                <p class="review-card__text">Нужно было обучить сразу 12 человек по пожарной безопасности. Все оформили дистанционно, сделали скидку за объем. Очень удобно, будем сотрудничать дальше.</p>
-                <p class="review-card__author"><strong>Ольга</strong>, HR</p>
-            </div>
-            <div class="review-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="review-card__stars">★★★★★</div>
-                <p class="review-card__text">Искал, где быстро пройти обучение по ГО и ЧС. Здесь объяснили, что нужно именно под мою должность, оформили за короткий срок. Всё официально, без проблем.</p>
-                <p class="review-card__author"><strong>Сергей</strong>, инженер</p>
-            </div>
-            <div class="review-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="review-card__stars">★★★★★</div>
-                <p class="review-card__text">Честно, сначала сомневалась из-за дистанционного формата, но в итоге всё прошло нормально. Документы настоящие, приняли без вопросов. Спасибо менеджеру за консультацию.</p>
-                <p class="review-card__author"><strong>Марина</strong></p>
-            </div>
-            <div class="review-card" data-aos="fade-up" data-aos-delay="0">
-                <div class="review-card__stars">★★★★★</div>
-                <p class="review-card__text">Заказывал обучение для себя и сотрудника. Всё сделали быстро, без лишних звонков и навязывания. Удобный формат, рекомендую.</p>
-                <p class="review-card__author"><strong>ИП Кузнецов</strong></p>
-            </div>
-            <div class="review-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="review-card__stars">★★★★★</div>
-                <p class="review-card__text">Помогли разобраться, какое обучение нужно для нашей компании. До этого вообще не понимали, что требуется по закону. Сейчас всё закрыли и спокойно работаем.</p>
-                <p class="review-card__author"><strong>Екатерина</strong>, бухгалтер</p>
-            </div>
-            <div class="review-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="review-card__stars">★★★★★</div>
-                <p class="review-card__text">Нормальный учебный центр. Без лишнего пафоса, просто делают свою работу. Сроки соблюдают, документы выдают.</p>
-                <p class="review-card__author"><strong>Андрей</strong></p>
-            </div>
-            <div class="review-card" data-aos="fade-up" data-aos-delay="0">
-                <div class="review-card__stars">★★★★★</div>
-                <p class="review-card__text">Работаем уже второй год. Закрываем через них все вопросы по обучению сотрудников. Удобно, что есть разные направления и не нужно искать нескольких подрядчиков.</p>
-                <p class="review-card__author"><strong>Виктор</strong>, руководитель отдела</p>
-            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
         </div>
     </div>
 </section>
@@ -815,6 +819,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 1024: { slidesPerView: 4, spaceBetween: 24 },
             }
         });
+    });
+});
+
+// Reviews Swiper
+document.addEventListener('DOMContentLoaded', () => {
+    new Swiper('.reviewsSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        navigation: {
+            nextEl: '.reviewsSwiper .swiper-button-next',
+            prevEl: '.reviewsSwiper .swiper-button-prev',
+        },
+        pagination: {
+            el: '.reviewsSwiper .swiper-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            640: { slidesPerView: 2, spaceBetween: 20 },
+            1024: { slidesPerView: 3, spaceBetween: 24 },
+        },
+        autoHeight: true,
     });
 });
 

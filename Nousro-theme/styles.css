@@ -683,15 +683,13 @@ ul {
 }
 
 /* ============================================ */
-/* ОТЗЫВЫ                                       */
+/* ОТЗЫВЫ (Swiper)                              */
 /* ============================================ */
 .reviews-section {
     padding: 60px 0;
 }
-.reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+.reviewsSwiper {
+    padding: 10px 40px 50px;
 }
 .review-card {
     background: #f8fafb;
@@ -701,6 +699,7 @@ ul {
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 .review-card:hover {
     transform: translateY(-2px);
@@ -727,14 +726,16 @@ ul {
 .review-card__author strong {
     color: #1c2b39;
 }
-@media (max-width: 1024px) {
-    .reviews-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.reviewsSwiper .swiper-button-prev,
+.reviewsSwiper .swiper-button-next {
+    color: #087ccf;
 }
-@media (max-width: 640px) {
-    .reviews-grid {
-        grid-template-columns: 1fr;
+.reviewsSwiper .swiper-pagination-bullet-active {
+    background: #087ccf;
+}
+@media (max-width: 768px) {
+    .reviewsSwiper {
+        padding: 10px 30px 40px;
     }
 }
 
