@@ -95,87 +95,71 @@ $cat_items  = get_field('cat_items');
 <?php endif; ?>
 
 <!-- ============================================ -->
-<!-- ПОПУЛЯРНЫЕ НАПРАВЛЕНИЯ (табы + слайдеры из рубрик) -->
+<!-- ПОПУЛЯРНЫЕ НАПРАВЛЕНИЯ (3 секции из рубрик) -->
 <!-- ============================================ -->
 <?php
 $popular_cats = array(
-    array('id' => 8,  'title' => 'Повышение квалификации'),
-    array('id' => 9,  'title' => 'Профпереподготовка'),
-    array('id' => 11, 'title' => 'Рабочие специальности'),
+    array('id' => 8,  'title' => 'Популярные направления Повышение квалификации'),
+    array('id' => 9,  'title' => 'Популярные направления Профпереподготовка'),
+    array('id' => 11, 'title' => 'Популярные направления Рабочие специальности'),
 );
+$sec_index = 0;
+foreach ($popular_cats as $cat):
+    $query = new WP_Query(array(
+        'cat'            => $cat['id'],
+        'posts_per_page' => 10,
+        'post_type'      => 'page',
+        'post_status'    => 'publish',
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+        'tax_query'      => array(
+            array(
+                'taxonomy' => 'category',
+                'field'    => 'term_id',
+                'terms'    => $cat['id'],
+            ),
+        ),
+    ));
+    $bg = $sec_index % 2 === 0 ? '#f6f7f9' : '#fff';
 ?>
-<section class="section popular-section" style="background: #f6f7f9;">
+<section class="section popular-section" style="background: <?php echo $bg; ?>;">
     <div class="content">
-        <h2 class="section__title" data-aos="fade-up">Популярные направления</h2>
-
-        <div class="popular-tabs">
-            <div class="popular-tabs__nav">
-                <?php $tab_index = 0; foreach ($popular_cats as $cat): ?>
-                    <button class="popular-tabs__btn <?php echo $tab_index === 0 ? 'active' : ''; ?>" data-tab="<?php echo $tab_index; ?>">
-                        <?php echo esc_html($cat['title']); ?>
-                    </button>
-                <?php $tab_index++; endforeach; ?>
-            </div>
-
-            <div class="popular-tabs__panels">
-                <?php $tab_index = 0; foreach ($popular_cats as $cat):
-                    $query = new WP_Query(array(
-                        'cat'            => $cat['id'],
-                        'posts_per_page' => 10,
-                        'post_type'      => 'page',
-                        'post_status'    => 'publish',
-                        'orderby'        => 'date',
-                        'order'          => 'DESC',
-                        'tax_query'      => array(
-                            array(
-                                'taxonomy' => 'category',
-                                'field'    => 'term_id',
-                                'terms'    => $cat['id'],
-                            ),
-                        ),
-                    ));
-                ?>
-                    <div class="popular-tabs__panel <?php echo $tab_index === 0 ? 'active' : ''; ?>" data-tab="<?php echo $tab_index; ?>">
-                        <?php if ($query->have_posts()): ?>
-                            <div class="swiper popularSwiper popularSwiper-<?php echo $tab_index; ?>">
-                                <div class="swiper-wrapper">
-                                    <?php while ($query->have_posts()): $query->the_post(); ?>
-                                        <div class="swiper-slide">
-                                            <div class="popular-card">
-                                                <?php if (has_post_thumbnail()): ?>
-                                                    <div class="popular-card__image">
-                                                        <a href="<?php the_permalink(); ?>">
-                                                            <?php the_post_thumbnail('medium', array('loading' => 'lazy')); ?>
-                                                        </a>
-                                                    </div>
-                                                <?php endif; ?>
-                                                <div class="popular-card__body">
-                                                    <h3 class="popular-card__title">
-                                                        <a href="<?php the_permalink(); ?>" style="color: inherit; text-decoration: none;"><?php the_title(); ?></a>
-                                                    </h3>
-                                                    <?php
-                                                    $hours = get_field('course_hours') ?: get_field('chasy');
-                                                    if ($hours): ?>
-                                                        <span class="popular-card__hours"><?php echo esc_html($hours); ?> ч.</span>
-                                                    <?php endif; ?>
-                                                    <a href="<?php the_permalink(); ?>" class="popular-card__btn">Подробнее</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php endwhile; wp_reset_postdata(); ?>
+        <h2 class="section__title" data-aos="fade-up"><?php echo esc_html($cat['title']); ?></h2>
+        <?php if ($query->have_posts()): ?>
+            <div class="swiper popularSwiper popularSwiper-<?php echo $sec_index; ?>">
+                <div class="swiper-wrapper">
+                    <?php while ($query->have_posts()): $query->the_post(); ?>
+                        <div class="swiper-slide">
+                            <div class="popular-card">
+                                <?php if (has_post_thumbnail()): ?>
+                                    <div class="popular-card__image">
+                                        <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail('medium', array('loading' => 'lazy')); ?></a>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="popular-card__body">
+                                    <h3 class="popular-card__title">
+                                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                    </h3>
+                                    <?php
+                                    $hours = get_field('course_hours') ?: get_field('chasy');
+                                    if ($hours): ?>
+                                        <span class="popular-card__hours"><?php echo esc_html($hours); ?> ч.</span>
+                                    <?php endif; ?>
+                                    <a href="<?php the_permalink(); ?>" class="popular-card__btn">Подробнее</a>
                                 </div>
-                                <div class="swiper-button-prev"></div>
-                                <div class="swiper-button-next"></div>
                             </div>
-                        <?php else: ?>
-                            <p style="text-align:center; color:#888;">Нет курсов в этой рубрике</p>
-                        <?php endif; ?>
-                    </div>
-                <?php $tab_index++; endforeach; ?>
+                        </div>
+                    <?php endwhile; wp_reset_postdata(); ?>
+                </div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
             </div>
-        </div>
+        <?php else: ?>
+            <p style="text-align:center; color:#888;">Нет курсов в этой рубрике</p>
+        <?php endif; ?>
     </div>
 </section>
+<?php $sec_index++; endforeach; ?>
 
 <!-- ============================================ -->
 <!-- ОСТАЛЬНЫЕ СЕКЦИИ (из оригинальной главной) -->
@@ -243,6 +227,8 @@ $popular_cats = array(
         </div>
     </div>
 </section>
+
+<div class="section-divider"></div>
 
 <!-- ============================================ -->
 <!-- ДОКУМЕНТЫ (Swiper) -->
@@ -780,45 +766,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Табы Популярные направления
-document.addEventListener('DOMContentLoaded', () => {
-    const tabBtns = document.querySelectorAll('.popular-tabs__btn');
-    const tabPanels = document.querySelectorAll('.popular-tabs__panel');
-
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tabId = btn.getAttribute('data-tab');
-
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabPanels.forEach(p => p.classList.remove('active'));
-
-            btn.classList.add('active');
-            const panel = document.querySelector('.popular-tabs__panel[data-tab="' + tabId + '"]');
-            if (panel) panel.classList.add('active');
-
-            // Обновить Swiper после показа панели
-            const swiperEl = panel ? panel.querySelector('.swiper') : null;
-            if (swiperEl && swiperEl.swiper) {
-                swiperEl.swiper.update();
-            }
-        });
-    });
-
-    // Инициализация Popular Swipers
-    document.querySelectorAll('.popularSwiper').forEach(el => {
-        new Swiper(el, {
-            slidesPerView: 1,
-            spaceBetween: 16,
-            navigation: {
-                nextEl: el.querySelector('.swiper-button-next'),
-                prevEl: el.querySelector('.swiper-button-prev'),
-            },
-            breakpoints: {
-                480: { slidesPerView: 2, spaceBetween: 16 },
-                768: { slidesPerView: 3, spaceBetween: 20 },
-                1024: { slidesPerView: 4, spaceBetween: 24 },
-            }
-        });
+// Инициализация Popular Swipers
+document.querySelectorAll('.popularSwiper').forEach(el => {
+    new Swiper(el, {
+        slidesPerView: 1,
+        spaceBetween: 16,
+        navigation: {
+            nextEl: el.querySelector('.swiper-button-next'),
+            prevEl: el.querySelector('.swiper-button-prev'),
+        },
+        breakpoints: {
+            480: { slidesPerView: 2, spaceBetween: 16 },
+            768: { slidesPerView: 3, spaceBetween: 20 },
+            1024: { slidesPerView: 4, spaceBetween: 24 },
+        }
     });
 });
 

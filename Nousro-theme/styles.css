@@ -365,6 +365,13 @@ ul {
 	max-width: 560px;
 }
 
+.section-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #dde5ef, transparent);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
 .content-screen__content{
 	width:80% !important
 	}	
@@ -633,11 +640,14 @@ ul {
     position: relative;
 }
 .about-us-compact__desc ul li::before {
-    content: "\u2713";
+    content: "\2713";
     position: absolute;
     left: 0;
     color: #8dd0ff;
     font-weight: bold;
+    font-size: 14px;
+    display: inline-block;
+    width: 14px;
 }
 .about-us-compact__link {
     display: inline-block;
@@ -686,10 +696,13 @@ ul {
 /* ОТЗЫВЫ (Swiper)                              */
 /* ============================================ */
 .reviews-section {
-    padding: 60px 0;
+    padding: 50px 0;
+}
+.reviews-section .section__title {
+    font-size: 24px;
 }
 .reviewsSwiper {
-    padding: 10px 40px 50px;
+    padding: 10px 50px 60px;
 }
 .review-card {
     background: #f8fafb;
@@ -726,16 +739,23 @@ ul {
 .review-card__author strong {
     color: #1c2b39;
 }
-.reviewsSwiper .swiper-button-prev,
-.reviewsSwiper .swiper-button-next {
+.reviewsSwiper .swiper-button-prev {
+    left: 0;
     color: #087ccf;
+}
+.reviewsSwiper .swiper-button-next {
+    right: 0;
+    color: #087ccf;
+}
+.reviewsSwiper .swiper-pagination {
+    bottom: 0 !important;
 }
 .reviewsSwiper .swiper-pagination-bullet-active {
     background: #087ccf;
 }
 @media (max-width: 768px) {
     .reviewsSwiper {
-        padding: 10px 30px 40px;
+        padding: 10px 35px 50px;
     }
 }
 
@@ -743,48 +763,47 @@ ul {
 /* FAQ (аккордеон)                               */
 /* ============================================ */
 .faq-section {
-    padding: 60px 0;
+    padding: 50px 0;
 }
 .faq-accordion {
-    max-width: 860px;
+    max-width: 760px;
     margin: 0 auto;
 }
 .faq-item-custom {
     border: 1px solid #dde5ef;
-    border-radius: 10px;
-    margin-bottom: 8px;
+    border-radius: 8px;
+    margin-bottom: 6px;
     overflow: hidden;
     background: #fff;
-    transition: box-shadow 0.2s;
-}
-.faq-item-custom:hover {
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 .faq-item-custom__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 16px 20px;
-    font-size: 16px;
+    padding: 15px 18px;
+    font-size: 15px;
     font-weight: 600;
     color: #1c2b39;
     background: #fff;
     border: none;
     cursor: pointer;
     text-align: left;
-    transition: background 0.2s, color 0.2s;
+    transition: color 0.2s;
+    outline: none;
 }
 .faq-item-custom__header:hover {
-    background: #f0f5ff;
     color: #087ccf;
 }
+.faq-item-custom__header:focus {
+    outline: none;
+}
 .faq-item-custom__header .material-icons {
-    font-size: 24px;
+    font-size: 22px;
     color: #087ccf;
     transition: transform 0.3s;
     flex-shrink: 0;
-    margin-left: 12px;
+    margin-left: 10px;
 }
 .faq-item-custom.active .faq-item-custom__header .material-icons {
     transform: rotate(180deg);
@@ -801,16 +820,16 @@ ul {
     max-height: 600px;
 }
 .faq-item-custom__body p {
-    padding: 0 20px 16px;
+    padding: 0 18px 14px;
     margin: 0;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.65;
     color: #444;
 }
 @media (max-width: 768px) {
     .faq-item-custom__header {
-        font-size: 15px;
-        padding: 14px 16px;
+        font-size: 14px;
+        padding: 13px 15px;
     }
 }
 
@@ -1137,52 +1156,18 @@ ul {
 }
 
 /* ============================================ */
-/* ПОПУЛЯРНЫЕ НАПРАВЛЕНИЯ (табы + слайдеры)    */
+/* ПОПУЛЯРНЫЕ НАПРАВЛЕНИЯ (отдельные секции)    */
 /* ============================================ */
 .popular-section {
-    padding: 60px 0;
+    padding: 50px 0;
 }
-
-.popular-tabs__nav {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 32px;
-    flex-wrap: wrap;
-}
-
-.popular-tabs__btn {
-    padding: 12px 28px;
-    font-size: 15px;
-    font-weight: 500;
-    border: 2px solid #087ccf;
-    background: #fff;
-    color: #087ccf;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.25s;
-}
-
-.popular-tabs__btn:hover {
-    background: #e6f0fa;
-}
-
-.popular-tabs__btn.active {
-    background: #087ccf;
-    color: #fff;
-}
-
-.popular-tabs__panel {
-    display: none;
-}
-
-.popular-tabs__panel.active {
-    display: block;
+.popular-section .section__title {
+    font-size: 24px;
 }
 
 .popular-card {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     transition: transform 0.25s, box-shadow 0.25s;
@@ -1192,13 +1177,13 @@ ul {
 }
 
 .popular-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.12);
 }
 
 .popular-card__image {
     width: 100%;
-    height: 160px;
+    height: 150px;
     overflow: hidden;
 }
 
@@ -1209,33 +1194,37 @@ ul {
 }
 
 .popular-card__body {
-    padding: 16px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     flex: 1;
 }
 
 .popular-card__title {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    margin: 0 0 8px;
+    margin: 0 0 6px;
     color: #1c2b39;
     line-height: 1.3;
 }
+.popular-card__title a {
+    color: inherit;
+    text-decoration: none;
+}
 
 .popular-card__hours {
-    font-size: 13px;
+    font-size: 12px;
     color: #087ccf;
     font-weight: 500;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     display: block;
 }
 
 .popular-card__btn {
     display: inline-block;
     margin-top: auto;
-    padding: 8px 20px;
-    font-size: 14px;
+    padding: 7px 16px;
+    font-size: 13px;
     font-weight: 500;
     background: #087ccf;
     color: #fff;
@@ -1251,7 +1240,7 @@ ul {
 }
 
 .popularSwiper {
-    padding: 10px 40px 40px;
+    padding: 10px 36px 30px;
 }
 
 .popularSwiper .swiper-button-prev,
@@ -1259,36 +1248,14 @@ ul {
     color: #087ccf;
 }
 
-.popularSwiper .swiper-button-prev {
-    left: 0;
-}
-
-.popularSwiper .swiper-button-next {
-    right: 0;
-}
-
 @media (max-width: 768px) {
     .popular-section {
-        padding: 40px 0;
-    }
-    .popular-tabs__btn {
-        padding: 10px 18px;
-        font-size: 14px;
+        padding: 35px 0;
     }
     .popular-card__image {
-        height: 140px;
+        height: 130px;
     }
     .popularSwiper {
-        padding: 10px 30px 30px;
-    }
-}
-
-@media (max-width: 480px) {
-    .popular-tabs__nav {
-        gap: 6px;
-    }
-    .popular-tabs__btn {
-        padding: 8px 14px;
-        font-size: 13px;
+        padding: 8px 28px 24px;
     }
 }
