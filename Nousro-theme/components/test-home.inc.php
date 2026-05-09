@@ -126,33 +126,35 @@ foreach ($popular_cats as $cat):
     <div class="content">
         <h2 class="section__title" data-aos="fade-up"><?php echo esc_html($cat['title']); ?></h2>
         <?php if ($query->have_posts()): ?>
-            <div class="swiper popularSwiper popularSwiper-<?php echo $sec_index; ?>">
-                <div class="swiper-wrapper">
-                    <?php while ($query->have_posts()): $query->the_post(); ?>
-                        <div class="swiper-slide">
-                            <div class="popular-card">
-                                <?php if (has_post_thumbnail()): ?>
-                                    <div class="popular-card__image">
-                                        <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail('medium', array('loading' => 'lazy')); ?></a>
-                                    </div>
-                                <?php endif; ?>
-                                <div class="popular-card__body">
-                                    <h5 class="popular-card__title">
-                                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                    </h5>
-                                    <?php
-                                    $hours = get_field('course_hours') ?: get_field('chasy');
-                                    if ($hours): ?>
-                                        <span class="popular-card__hours"><?php echo esc_html($hours); ?> ч.</span>
+            <div class="popularSwiper-wrap">
+                <div class="swiper popularSwiper popularSwiper-<?php echo $sec_index; ?>">
+                    <div class="swiper-wrapper">
+                        <?php while ($query->have_posts()): $query->the_post(); ?>
+                            <div class="swiper-slide">
+                                <div class="popular-card">
+                                    <?php if (has_post_thumbnail()): ?>
+                                        <div class="popular-card__image">
+                                            <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail('medium', array('loading' => 'lazy')); ?></a>
+                                        </div>
                                     <?php endif; ?>
-                                    <a href="<?php the_permalink(); ?>" class="popular-card__btn">Подробнее</a>
+                                    <div class="popular-card__body">
+                                        <h5 class="popular-card__title">
+                                            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                        </h5>
+                                        <?php
+                                        $hours = get_field('course_hours') ?: get_field('chasy');
+                                        if ($hours): ?>
+                                            <span class="popular-card__hours"><?php echo esc_html($hours); ?> ч.</span>
+                                        <?php endif; ?>
+                                        <a href="<?php the_permalink(); ?>" class="popular-card__btn">Подробнее</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php endwhile; wp_reset_postdata(); ?>
+                        <?php endwhile; wp_reset_postdata(); ?>
+                    </div>
                 </div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev popularSwiper-prev"></div>
+                <div class="swiper-button-next popularSwiper-next"></div>
             </div>
         <?php else: ?>
             <p style="text-align:center; color:#888;">Нет курсов в этой рубрике</p>
@@ -610,23 +612,25 @@ $reviews = array(
 <section class="section reviews-section" style="background: #fff;">
     <div class="content">
         <h2 class="section__title" data-aos="fade-up">Отзывы о Межрегиональном Учебном Центре</h2>
-        <div class="swiper reviewsSwiper">
-            <div class="swiper-wrapper">
-                <?php foreach ($reviews as $review): ?>
-                    <div class="swiper-slide">
-                        <div class="review-card">
-                            <div class="review-card__stars">★★★★★</div>
-                            <p class="review-card__text"><?php echo esc_html($review['text']); ?></p>
-                            <p class="review-card__author">
-                                <strong><?php echo esc_html($review['author']); ?></strong><?php echo $review['company'] ? ', ' . esc_html($review['company']) : ''; ?>
-                            </p>
+        <div class="reviewsSwiper-wrap">
+            <div class="swiper reviewsSwiper">
+                <div class="swiper-wrapper">
+                    <?php foreach ($reviews as $review): ?>
+                        <div class="swiper-slide">
+                            <div class="review-card">
+                                <div class="review-card__stars">★★★★★</div>
+                                <p class="review-card__text"><?php echo esc_html($review['text']); ?></p>
+                                <p class="review-card__author">
+                                    <strong><?php echo esc_html($review['author']); ?></strong><?php echo $review['company'] ? ', ' . esc_html($review['company']) : ''; ?>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </div>
             </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
+            <div class="swiper-pagination reviewsSwiper-pagination"></div>
+            <div class="swiper-button-prev reviewsSwiper-prev"></div>
+            <div class="swiper-button-next reviewsSwiper-next"></div>
         </div>
     </div>
 </section>
@@ -768,12 +772,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Инициализация Popular Swipers
 document.querySelectorAll('.popularSwiper').forEach(el => {
+    const wrap = el.parentElement;
     new Swiper(el, {
         slidesPerView: 1,
         spaceBetween: 16,
         navigation: {
-            nextEl: el.querySelector('.swiper-button-next'),
-            prevEl: el.querySelector('.swiper-button-prev'),
+            nextEl: wrap.querySelector('.popularSwiper-next'),
+            prevEl: wrap.querySelector('.popularSwiper-prev'),
         },
         breakpoints: {
             480: { slidesPerView: 2, spaceBetween: 16 },
@@ -789,11 +794,11 @@ document.addEventListener('DOMContentLoaded', () => {
         slidesPerView: 1,
         spaceBetween: 20,
         navigation: {
-            nextEl: '.reviewsSwiper .swiper-button-next',
-            prevEl: '.reviewsSwiper .swiper-button-prev',
+            nextEl: '.reviewsSwiper-next',
+            prevEl: '.reviewsSwiper-prev',
         },
         pagination: {
-            el: '.reviewsSwiper .swiper-pagination',
+            el: '.reviewsSwiper-pagination',
             clickable: true,
         },
         breakpoints: {
